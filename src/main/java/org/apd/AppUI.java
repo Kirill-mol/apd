@@ -25,7 +25,6 @@ public class AppUI {
     public static final String colorBlue = "#331A79";
 
     public final Button btnEditGraph;
-    public final Button btnStepBack;
     public final Button btnStepForward;
     public final Button btnResult;
     public final Button btnSaveResult;
@@ -52,7 +51,6 @@ public class AppUI {
         imgAppCover = new Image("file:src\\img\\cover.png");
 
         btnEditGraph = new AppButton("Edit graph", colorOrange);
-        btnStepBack = new AppButton("Step back", colorCyan);
         btnStepForward = new AppButton("Step forward", colorCyan);
         btnResult = new AppButton("Result", colorCyan);
         btnSaveResult = new AppButton("Save result in file", colorGreen);
@@ -66,7 +64,7 @@ public class AppUI {
         btnOK = new AppButton("OK", colorGreen);
 
         boxDraw = new Pane();
-        boxDraw.setStyle("-fx-background-color: #999; -fx-padding: 4px; -fx-max-width: 10000px");
+        boxDraw.setStyle("-fx-background-color: #999; -fx-padding: 4px; -fx-max-width: 10000px; -fx-pref-width: 1px; -fx-pref-height: 1px");
         boxTxtLog = new VBox();
         boxTxtLog.setStyle("-fx-background-color: #ccc; -fx-text-fill: #000; -fx-max-width: 400px; -fx-padding: 15px");
         boxTxtAddE = new TextField("<First vertex> <Second vertex> <Weight>");
@@ -78,7 +76,7 @@ public class AppUI {
 
         //Components of Main window
         var boxCover = new StackPane(new ImageView(imgAppCover), btnStart);
-        var boxMainCommandsLeft = new HBox(btnStepBack, btnStepForward, btnResult);
+        var boxMainCommandsLeft = new HBox(btnStepForward, btnResult);
         boxMainCommandsLeft.setStyle("-fx-spacing: 5px");
         var boxMainCommandsRight = new HBox(btnEditGraph, btnSaveResult);
         boxMainCommandsRight.setStyle("-fx-spacing: 5px");
