@@ -1,4 +1,4 @@
-package org.apd;
+package org.apd.ui;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -46,7 +46,7 @@ public class AppUI {
     public final Scene sceneMain;
     public final Scene sceneEdit;
 
-    AppUI(){
+    public AppUI(){
         imgAppIcon = new Image("file:src\\img\\icon-64.png");
         imgAppCover = new Image("file:src\\img\\cover.png");
 
