@@ -1,4 +1,4 @@
 --patch-module
-org.example=_
+org.apd=_
 --add-reads
-org.example=ALL-UNNAMED
+org.apd=ALL-UNNAMED

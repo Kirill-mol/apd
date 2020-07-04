@@ -11,7 +11,11 @@ public class GraphUI {
     private static class GraphV extends Circle{
         GraphV(double centerX, double centerY){
             super(centerX, centerY,6.0);
+<<<<<<< HEAD
             //setStyle("-fx-stroke: #fff; -fx-stroke-width: 2px; -fx-fill: " + AppUI.colorOrange);
+=======
+            setStyle("-fx-stroke: #fff; -fx-stroke-width: 2px; -fx-fill: " + AppUI.colorOrange);
+>>>>>>> Move UI in package org.apd.ui
         }
         public void setColor(String color){
             setFill(Color.web(color));
