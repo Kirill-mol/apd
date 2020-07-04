@@ -1,4 +1,4 @@
-package org.apd;
+package org.apd.ui;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
