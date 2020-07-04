@@ -5,6 +5,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.apd.ui.AppUI;
+import org.apd.ui.GraphUI;
 
 
 /**

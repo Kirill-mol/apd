@@ -13,12 +13,18 @@ public class GraphUI {
             super(centerX, centerY,6.0);
             setStyle("-fx-stroke: #fff; -fx-stroke-width: 2px; -fx-fill: " + AppUI.colorOrange);
         }
+        public void setColor(String color){
+            setFill(Color.web(color));
+        }
     }
 
     private static class GraphE extends Line {
         GraphE(double x0, double y0, double x1, double y1){
             super(x0, y0, x1, y1);
             setStyle("-fx-fill: #fff");
+        }
+        public void setColor(String color){
+            setFill(Color.web(color));
         }
     }
 
