@@ -1,4 +1,4 @@
-module org.example {
+module org.apd {
     requires javafx.controls;
     exports org.apd;
 }
