@@ -1,0 +1,4 @@
+--patch-module
+org.apd=_
+--add-reads
+org.apd=ALL-UNNAMED
