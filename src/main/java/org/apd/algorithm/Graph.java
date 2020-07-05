@@ -15,15 +15,28 @@ public class Graph {
     }
 
     public void addEdge(Character firstTopName, Character secondTopName, int weight) {
-        edgesList.add(new Edge(firstTopName, secondTopName, weight));
-        if (!vertexesList.contains(firstTopName)) vertexesList.add(firstTopName);
-        if (!vertexesList.contains(secondTopName)) vertexesList.add(secondTopName);
+        Edge edge = new Edge(firstTopName, secondTopName, weight);
+        addEdge(edge);
     }
 
-    public void addEdge(Edge edge) {
+    public boolean addEdge(Edge edge) {
+        if(!checkEdge(edge)) return false;
         edgesList.add(edge);
         if (!vertexesList.contains(edge.getBegin())) vertexesList.add(edge.getBegin());
         if (!vertexesList.contains(edge.getEnd())) vertexesList.add(edge.getEnd());
+        return true;
+    }
+
+    private boolean checkEdge(Edge edge) {
+        for (Edge curEdge : edgesList) {
+            if (((curEdge.getBegin() == edge.getBegin()) && (curEdge.getEnd() == edge.getEnd())) ||
+                    ((curEdge.getEnd() == edge.getBegin()) && (curEdge.getBegin() == edge.getEnd()))) {
+                //System.out.print(curEdge + " " + edge + "\t");
+                //System.out.println(curEdge.getBegin() + "-" + edge.getBegin() + " " + curEdge.getEnd() + "-" + curEdge.getEnd() + " " + curEdge.getEnd() + "-" + edge.getBegin() + " " + curEdge.getBegin() + "-" + curEdge.getEnd());
+                return false;
+            }
+        }
+        return true;
     }
 
     public void clear() {
@@ -56,41 +69,6 @@ public class Graph {
     public List<Character> getVertexesList() {
         return vertexesList;
     }
-
-    /*public List<Edge> findMinimumSpanningTree() {
-        List<Edge> minimumSpanningTree = new ArrayList<>();
-        List<Edge> notUsedEdges = new ArrayList<>(edgesList);
-        List<Character> usedVertexes = new LinkedList<>();
-        List<Character> notUsedVertexes = new LinkedList<>(vertexesList);
-        usedVertexes.add(notUsedVertexes.remove(0));
-        while (notUsedVertexes.size() > 0) {
-            int minE = -1;
-            for (int i = 0; i < notUsedEdges.size(); i++) {
-                if (((usedVertexes.indexOf(notUsedEdges.get(i).getBegin()) != -1) &&
-                        (notUsedVertexes.indexOf(notUsedEdges.get(i).getEnd()) != -1)) ||
-                        ((usedVertexes.indexOf(notUsedEdges.get(i).getEnd()) != -1) &&
-                                (notUsedVertexes.indexOf(notUsedEdges.get(i).getBegin()) != -1))) {
-                    if (minE != -1) {
-                        if (notUsedEdges.get(i).getWeight() < notUsedEdges.get(minE).getWeight())
-                            minE = i;
-                    } else
-                        minE = i;
-                }
-
-            }
-
-            if (usedVertexes.indexOf(notUsedEdges.get(minE).getBegin()) != -1) {
-                usedVertexes.add(notUsedEdges.get(minE).getEnd());
-                notUsedVertexes.remove(notUsedEdges.get(minE).getEnd());
-            } else {
-                usedVertexes.add(notUsedEdges.get(minE).getBegin());
-                notUsedVertexes.remove(notUsedEdges.get(minE).getBegin());
-            }
-            minimumSpanningTree.add(notUsedEdges.get(minE));
-            notUsedEdges.remove(minE);
-        }
-        return minimumSpanningTree;
-    }*/
 
     @Override
     public String toString() {

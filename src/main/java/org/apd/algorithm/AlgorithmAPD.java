@@ -3,9 +3,9 @@ package org.apd.algorithm;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class AlgorithmAPD {
     private Graph graph;
@@ -17,6 +17,7 @@ public class AlgorithmAPD {
     private List<Edge> minimumSpanningTree = new ArrayList<>();
 
     private boolean isInitializedNotUsedLists = false;
+    private boolean isConnectivityChecked = false;
 
     private void initialize(){
         if (!isInitializedNotUsedLists){
@@ -26,6 +27,33 @@ public class AlgorithmAPD {
             isInitializedNotUsedLists = true;
         }
 
+    }
+
+    private boolean graphConnectivityCheck() {
+        if(isConnectivityChecked) return true;
+        var checkedVertexesList = new boolean[graph.getVertexesList().size()];
+        List<Edge> edgesList = graph.getEdgesList();
+        List<Character> vertexesList = graph.getVertexesList();
+        Stack<Character> stackForDFS = new Stack<>();
+        stackForDFS.push(vertexesList.get(0));
+        while (!stackForDFS.empty()){
+            Character curVertex = stackForDFS.pop();
+            checkedVertexesList[vertexesList.indexOf(curVertex)] = true;
+            for (Edge edge : edgesList) {
+                if ((edge.getBegin() == curVertex) && (!checkedVertexesList[vertexesList.indexOf(edge.getEnd())])) {
+                    stackForDFS.push(edge.getEnd());
+                }
+            }
+        }
+        for(Boolean bool : checkedVertexesList){
+            if(!bool) return false;
+        }
+        isConnectivityChecked = true;
+        return true;
+    }
+
+    public void clear(){
+        graph.clear();
     }
 
     public AlgorithmAPD(Graph graph) {
@@ -40,8 +68,8 @@ public class AlgorithmAPD {
         graph.removeVertex(vertex);
     }
 
-    public void addEdge(Edge edge) {
-        graph.addEdge(edge);
+    public boolean addEdge(Edge edge) {
+        return graph.addEdge(edge);
     }
 
     public void readGraphFromFile(File file) throws FileNotFoundException {
@@ -53,16 +81,18 @@ public class AlgorithmAPD {
         }
     }
 
-    public List<Edge> result() {
+    public List<Edge> result() throws Exception {
         initialize();
+        if(!graphConnectivityCheck()) throw new Exception("graph isn't connected");
         while (notUsedVertexes.size() > 0) {
-            newEdgeAtMst();
+            nextEdgeAtMst();
         }
         return minimumSpanningTree;
     }
 
-    public Edge newEdgeAtMst() {
+    public Edge nextEdgeAtMst() throws Exception {
         initialize();
+        if(!graphConnectivityCheck()) throw new Exception("graph isn't connected");
         var result = new Edge('a', 'a', -1);
         if(notUsedVertexes.size() > 0) {
             int minE = -1;
