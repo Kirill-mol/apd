@@ -43,6 +43,9 @@ public class AlgorithmAPD {
                 if ((edge.getBegin() == curVertex) && (!checkedVertexesList[vertexesList.indexOf(edge.getEnd())])) {
                     stackForDFS.push(edge.getEnd());
                 }
+                if ((edge.getEnd() == curVertex) && (!checkedVertexesList[vertexesList.indexOf(edge.getBegin())])) {
+                    stackForDFS.push(edge.getBegin());
+                }
             }
         }
         for(Boolean bool : checkedVertexesList){
