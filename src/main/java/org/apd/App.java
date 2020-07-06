@@ -1,10 +1,12 @@
 package org.apd;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.apd.ui.AppUI;
+import org.apd.ui.GraphUI;
 
 
 /**
@@ -14,13 +16,47 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
-        var javaVersion = SystemInfo.javaVersion();
-        var javafxVersion = SystemInfo.javafxVersion();
+        //var javaVersion = SystemInfo.javaVersion();
+        //var javafxVersion = SystemInfo.javafxVersion();
 
-        var label = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        var scene = new Scene(new StackPane(label), 640, 480);
-        stage.setScene(scene);
+        var appUI = new AppUI();
+
+        var stageEdit = new Stage();
+        stageEdit.setTitle("Edit");
+        stageEdit.getIcons().add(appUI.imgAppIcon);
+        stageEdit.setScene(appUI.sceneEdit);
+        stageEdit.initModality(Modality.APPLICATION_MODAL);
+
+        stage.setTitle("Prim Beta");
+        stage.getIcons().add(appUI.imgAppIcon);
+        stage.setResizable(false);
+        stage.setScene(appUI.sceneCover);
+        stage.centerOnScreen();
         stage.show();
+
+        appUI.btnStart.setOnAction(actionEvent -> {
+            stage.setScene(appUI.sceneMain);
+            GraphUI.drawGraph(appUI.boxDraw, 8);
+            stage.setResizable(true);
+        });
+
+        appUI.btnEditGraph.setOnAction(actionEvent -> {
+            stageEdit.show();
+        });
+
+        appUI.boxDraw.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                GraphUI.moveGraphX(t1.doubleValue() - number.doubleValue());
+            }
+        });
+
+        appUI.boxDraw.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                GraphUI.moveGraphY(t1.doubleValue() - number.doubleValue());
+            }
+        });
     }
 
     public static int is10(){
