@@ -1,5 +1,7 @@
 package org.apd.algorithm;
 
+import java.util.Objects;
+
 public class Edge {
 
     private Character begin, end;
@@ -26,5 +28,19 @@ public class Edge {
     @Override
     public String toString() {
         return begin + " " + end + " " + weight;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Edge)) return false;
+        Edge edge = (Edge) o;
+        return ((edge.getBegin() == edge.getBegin()) && (edge.getEnd() == edge.getEnd())) ||
+                ((edge.getEnd() == edge.getBegin()) && (edge.getBegin() == edge.getEnd()));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getBegin(), getEnd(), getWeight());
     }
 }

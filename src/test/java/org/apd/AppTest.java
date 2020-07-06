@@ -32,9 +32,12 @@ class AppTest extends Assertions{
         for (int i = 0; i < 6; i++) {
             String[] curLine = testInput[i].split(" ");
             Edge edge = new Edge(curLine[0].charAt(0), curLine[1].charAt(0), Integer.parseInt(curLine[2]));
-            if(!algorithmAPD.addEdge(edge)) {
-                System.out.println(edge + " edge is in graph already");
+            try {
+                algorithmAPD.addEdge(edge);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
+
         }
         try {
             assertEquals(algorithmAPD.result().toString(), "[a c 1, a e 2, b c 3, c d 4]");
@@ -45,9 +48,10 @@ class AppTest extends Assertions{
 
     @Test
     public void testForJava(){
-        var booleans = new boolean[10];
-        for (int i = 0; i < 10; i++) {
-            System.out.println(booleans[i]);
-        }
+        List<Edge> characters = new ArrayList<>();
+        characters.add(new Edge('a', 'b', 12));
+        characters.add(new Edge('c', 't', 12));
+        characters.add(new Edge('r', 'p', 12));
+        System.out.println(characters.indexOf(new Edge('b', 'a', 11)));
     }
 }

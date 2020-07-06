@@ -29,10 +29,7 @@ public class Graph {
 
     private boolean checkEdge(Edge edge) {
         for (Edge curEdge : edgesList) {
-            if (((curEdge.getBegin() == edge.getBegin()) && (curEdge.getEnd() == edge.getEnd())) ||
-                    ((curEdge.getEnd() == edge.getBegin()) && (curEdge.getBegin() == edge.getEnd()))) {
-                //System.out.print(curEdge + " " + edge + "\t");
-                //System.out.println(curEdge.getBegin() + "-" + edge.getBegin() + " " + curEdge.getEnd() + "-" + curEdge.getEnd() + " " + curEdge.getEnd() + "-" + edge.getBegin() + " " + curEdge.getBegin() + "-" + curEdge.getEnd());
+            if (curEdge.equals(edge)) {
                 return false;
             }
         }

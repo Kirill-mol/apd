@@ -71,11 +71,11 @@ public class AlgorithmAPD {
         graph.removeVertex(vertex);
     }
 
-    public boolean addEdge(Edge edge) {
-        return graph.addEdge(edge);
+    public void addEdge(Edge edge) throws Exception {
+        if(!graph.addEdge(edge)) throw new Exception("edge already exist");
     }
 
-    public void readGraphFromFile(File file) throws FileNotFoundException {
+    public void readGraphFromFile(File file) throws Exception {
         var scanner = new Scanner(file).useDelimiter(System.getProperty("line.separator"));
         while (scanner.hasNext()){
             String[] curLine = scanner.nextLine().split(" ");
