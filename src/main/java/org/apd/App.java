@@ -3,10 +3,13 @@ package org.apd;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.apd.algorithm.AlgorithmAPD;
+import org.apd.algorithm.Graph;
 import org.apd.ui.AppUI;
 import org.apd.ui.GraphUI;
+
+import java.util.logging.Logger;
 
 
 /**
@@ -20,12 +23,73 @@ public class App extends Application {
         //var javafxVersion = SystemInfo.javafxVersion();
 
         var appUI = new AppUI();
+        var graphUI = new GraphUI(appUI.boxDraw);
+        var graph = new Graph();
+        var apd = new AlgorithmAPD(graph);
+        var controller = new Controller(appUI, graphUI, graph, apd);
 
-        var stageEdit = new Stage();
-        stageEdit.setTitle("Edit");
-        stageEdit.getIcons().add(appUI.imgAppIcon);
-        stageEdit.setScene(appUI.sceneEdit);
-        stageEdit.initModality(Modality.APPLICATION_MODAL);
+        appUI.btnStart.setOnAction(actionEvent -> {
+            stage.setScene(appUI.sceneMain);
+            stage.setResizable(true);
+        });
+
+        appUI.btnEditGraph.setOnAction(actionEvent -> {
+            appUI.windowEdit.show();
+        });
+
+        Logger.getLogger("log");
+
+        appUI.btnOK.setOnAction(actionEvent -> {
+            appUI.windowEdit.close();
+        });
+
+        appUI.btnAddFromFile.setOnAction(actionEvent -> {
+            var file = appUI.windowAddFromFile.showOpenDialog(appUI.windowEdit);
+            controller.openFile(file);
+        });
+
+        appUI.btnAddE.setOnAction(actionEvent -> {
+            controller.addEdge();
+        });
+
+        appUI.btnDeleteE.setOnAction(actionEvent -> {
+            controller.deleteEdge();
+        });
+
+        appUI.btnDeleteV.setOnAction(actionEvent -> {
+            controller.deleteVertex();
+        });
+
+        appUI.btnDeleteGraph.setOnAction(actionEvent -> {
+            controller.deleteGraph();
+        });
+
+        appUI.btnStepForward.setOnAction(actionEvent -> {
+            controller.nextStep();
+        });
+
+        appUI.btnResult.setOnAction(actionEvent -> {
+            controller.result();
+        });
+
+        appUI.btnSaveResult.setOnAction(actionEvent -> {
+           var dir = appUI.windowSaveResult.showDialog(stage);
+           controller.saveResult(dir);
+        });
+
+        appUI.boxDraw.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                graphUI.moveGraph();
+            }
+        });
+
+        appUI.boxDraw.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                graphUI.moveGraph();
+            }
+        });
 
         stage.setTitle("Prim Beta");
         stage.getIcons().add(appUI.imgAppIcon);
@@ -33,34 +97,6 @@ public class App extends Application {
         stage.setScene(appUI.sceneCover);
         stage.centerOnScreen();
         stage.show();
-
-        appUI.btnStart.setOnAction(actionEvent -> {
-            stage.setScene(appUI.sceneMain);
-            GraphUI.drawGraph(appUI.boxDraw, 8);
-            stage.setResizable(true);
-        });
-
-        appUI.btnEditGraph.setOnAction(actionEvent -> {
-            stageEdit.show();
-        });
-
-        appUI.boxDraw.widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                GraphUI.moveGraphX(t1.doubleValue() - number.doubleValue());
-            }
-        });
-
-        appUI.boxDraw.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                GraphUI.moveGraphY(t1.doubleValue() - number.doubleValue());
-            }
-        });
-    }
-
-    public static int is10(){
-        return 10;
     }
 
     public static void main(String[] args) {

@@ -35,8 +35,8 @@ public class Edge {
         if (this == o) return true;
         if (!(o instanceof Edge)) return false;
         Edge edge = (Edge) o;
-        return ((edge.getBegin() == this.getBegin()) && (edge.getEnd() == this.getEnd())) ||
-                ((edge.getEnd() == this.getBegin()) && (edge.getBegin() == this.getEnd()));
+        return ((this.getBegin() == edge.getBegin()) && (this.getEnd() == edge.getEnd())) ||
+                ((this.getEnd() == edge.getBegin()) && (this.getBegin() == edge.getEnd()));
     }
 
     @Override
