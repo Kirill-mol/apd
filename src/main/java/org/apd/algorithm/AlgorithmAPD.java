@@ -123,7 +123,17 @@ public class AlgorithmAPD {
             minimumSpanningTree.add(notUsedEdges.get(minE));
             result = notUsedEdges.get(minE);
             notUsedEdges.remove(minE);
+        } else {
+            throw new Exception("all vertexes added");
         }
         return result;
+    }
+
+    public List<Character> getUsedVertexes(){
+        return usedVertexes;
+    }
+
+    public List<Edge> getMinimumSpanningTree(){
+        return minimumSpanningTree;
     }
 }
