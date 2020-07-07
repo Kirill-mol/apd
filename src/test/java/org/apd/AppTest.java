@@ -1,19 +1,21 @@
 package org.apd;
 
+import junit.framework.Assert;
 import org.apd.algorithm.AlgorithmAPD;
 import org.apd.algorithm.Edge;
 import org.apd.algorithm.Graph;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.Assertions;
+//import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static org.junit.jupiter.api.Assertions.*;
+//import static org.junit.jupiter.api.Assertions.*;
 
-class AppTest extends Assertions{
+class AppTest {// extends Assertions{
 
+/*
     @Test
     public void is10() {
         Assertions.assertEquals(10, App.is10());
@@ -54,4 +56,5 @@ class AppTest extends Assertions{
         characters.add(new Edge('r', 'p', 12));
         System.out.println(characters.indexOf(new Edge('b', 'a', 11)));
     }
+  */
 }
