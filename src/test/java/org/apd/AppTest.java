@@ -15,11 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class AppTest extends Assertions{
 
     @Test
-    public void is10() {
-        Assertions.assertEquals(10, App.is10());
-    }
-
-    @Test
     public void checkAlgorithmEdgeInput(){
         AlgorithmAPD algorithmAPD1 = new AlgorithmAPD(new Graph());
         String[] testInput = {

@@ -160,7 +160,17 @@ public class AlgorithmAPD {
             result = notUsedEdges.get(minE);
             LOGGER.log(Level.INFO, "Add edge: {0} to MST", result.toString());
             notUsedEdges.remove(minE);
+        } else {
+            throw new Exception("all vertexes added");
         }
         return result;
+    }
+
+    public List<Character> getUsedVertexes(){
+        return usedVertexes;
+    }
+
+    public List<Edge> getMinimumSpanningTree(){
+        return minimumSpanningTree;
     }
 }
