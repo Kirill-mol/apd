@@ -21,7 +21,7 @@ class AppTest extends Assertions{
 
     @Test
     public void checkAlgorithmEdgeInput(){
-        AlgorithmAPD algorithmAPD = new AlgorithmAPD(new Graph());
+        AlgorithmAPD algorithmAPD1 = new AlgorithmAPD(new Graph());
         String[] testInput = {
                 "a b 5",
                 "a e 2",
@@ -33,17 +33,15 @@ class AppTest extends Assertions{
             String[] curLine = testInput[i].split(" ");
             Edge edge = new Edge(curLine[0].charAt(0), curLine[1].charAt(0), Integer.parseInt(curLine[2]));
             try {
-                algorithmAPD.addEdge(edge);
+                algorithmAPD1.addEdge(edge);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
 
         }
         try {
-            assertEquals(algorithmAPD.result().toString(), "[a c 1, a e 2, b c 3, c d 4]");
-        } catch (Exception ignored){
-
-        }
+            assertEquals(algorithmAPD1.result().toString(), "[a c 1, a e 2, b c 3, c d 4]");
+        } catch (Exception ignored){}
     }
 
     @Test

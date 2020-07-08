@@ -3,27 +3,38 @@ package org.apd.algorithm;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.*;
 
 public class Graph {
+    private static final Logger LOGGER = Logger.getLogger(Graph.class.getName());
 
     private List<Edge> edgesList;
     private List<Character> vertexesList;
 
+    static {
+        //LOGGER.setLevel(Level.OFF);
+    }
+
     public Graph() {
+        LOGGER.info("Create new graph");
         edgesList = new ArrayList<>();
         vertexesList = new LinkedList<>();
     }
 
-    public void addEdge(Character firstTopName, Character secondTopName, int weight) {
-        Edge edge = new Edge(firstTopName, secondTopName, weight);
-        addEdge(edge);
-    }
 
     public boolean addEdge(Edge edge) {
+        LOGGER.log(Level.INFO,"Try to add new edge: {0}", edge);
         if(!checkEdge(edge)) return false;
+        LOGGER.log(Level.INFO,"Edge: {0} doesn't exist in the graph", edge);
         edgesList.add(edge);
-        if (!vertexesList.contains(edge.getBegin())) vertexesList.add(edge.getBegin());
-        if (!vertexesList.contains(edge.getEnd())) vertexesList.add(edge.getEnd());
+        if (!vertexesList.contains(edge.getBegin())) {
+            LOGGER.log(Level.INFO, "Vertex: '{0}' is new in graph, add it to vertexes list", edge.getBegin().toString());
+            vertexesList.add(edge.getBegin());
+        }
+        if (!vertexesList.contains(edge.getEnd())){
+            LOGGER.log(Level.INFO, "Vertex: '{0}' is new in graph, add it to vertexes list", edge.getEnd().toString());
+            vertexesList.add(edge.getEnd());
+        }
         return true;
     }
 
@@ -37,11 +48,13 @@ public class Graph {
     }
 
     public void clear() {
+        LOGGER.log(Level.INFO, "Clear graph");
         edgesList.clear();
         vertexesList.clear();
     }
 
     public void removeEdge(Edge edge) {
+        LOGGER.log(Level.INFO, "Remove edge: {0}, from graph", edge);
         edgesList.remove(edge);
         boolean isContainFirstVertex = false;
         boolean isContainSecondVertex = false;
@@ -50,11 +63,18 @@ public class Graph {
                 isContainFirstVertex = true;
             if (curEdge.getBegin() == edge.getEnd() || curEdge.getEnd() == edge.getEnd()) isContainSecondVertex = true;
         }
-        if (!isContainFirstVertex) vertexesList.remove(edge.getBegin());
-        if (!isContainSecondVertex) vertexesList.remove(edge.getEnd());
+        if (!isContainFirstVertex) {
+            vertexesList.remove(edge.getBegin());
+            LOGGER.log(Level.CONFIG, "No edges, connected to vertex: '{0}'", edge.getBegin());
+        }
+        if (!isContainSecondVertex) {
+            LOGGER.log(Level.CONFIG, "No edges, connected to vertex: '{0}'", edge.getEnd());
+            vertexesList.remove(edge.getEnd());
+        }
     }
 
     public void removeVertex(Character vertex) {
+        LOGGER.log(Level.CONFIG, "Remove vertex: '{0}' from graph", vertex);
         vertexesList.remove(vertex);
         edgesList.removeIf(edge -> edge.getBegin() == vertex || edge.getEnd() == vertex);
     }
