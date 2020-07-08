@@ -33,7 +33,6 @@ public class Controller {
             apd.readGraphFromFile(file);
             update();
             enableBtn();
-            logInfo("Open " + file.getPath() + "\n Start algorithm");
         } catch (Exception e) {
             appUI.windowError.setHeaderText(e.getMessage());
             appUI.windowError.show();
@@ -48,7 +47,6 @@ public class Controller {
             apd.addEdge(edge);
             update();
             enableBtn();
-            logInfo("Add edge " + edge.getBegin() + "-" + edge.getEnd() + "-" + edge.getWeight());
         } catch (Exception e){
             appUI.windowError.setHeaderText(e.getMessage());
             appUI.windowError.show();
@@ -61,7 +59,6 @@ public class Controller {
             apd.removeEdge(item);
             update();
             disableBtn();
-            logInfo("Delete edge " + item.getBegin() + "-" + item.getEnd() + "-" + item.getWeight());
         } catch (Exception e){
             appUI.windowError.setHeaderText(e.getMessage());
             appUI.windowError.show();
@@ -74,7 +71,6 @@ public class Controller {
             String[] curLine = scanner.nextLine().split(" ");
             for (var str: curLine){
                 apd.removeVertex(str.charAt(0));
-                logInfo("Delete vertex " + str.charAt(0));
             }
             update();
             disableBtn();
@@ -95,7 +91,6 @@ public class Controller {
             var e = apd.nextEdgeAtMst();
             graphUI.addToSpanning(e);
             appUI.btnEditGraph.setDisable(true);
-            logAPD("Edge of spanning tree " + e.getBegin() + "-" + e.getEnd() + "-" + e.getWeight());
 
         } catch (Exception e){
             appUI.btnStepForward.setDisable(true);
@@ -108,7 +103,6 @@ public class Controller {
         try {
             List<Edge> es = apd.result();
             for (var e: es){
-                logAPD("Edge of spanning tree " + e.getBegin() + "-" + e.getEnd() + "-" + e.getWeight());
                 graphUI.addToSpanning(e);
             }
             appUI.btnStepForward.setDisable(true);
@@ -126,7 +120,6 @@ public class Controller {
             var snapshot = appUI.boxDraw.snapshot(new SnapshotParameters(), null);
             var file = new File(dir.getPath() + "\\result.png");
             ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", file);
-            logInfo("Save result in " + file.getPath());
         } catch (Exception e){
             appUI.windowError.setHeaderText(e.getMessage());
             appUI.windowError.show();
@@ -167,13 +160,5 @@ public class Controller {
     private void update(){
         updateTableGraph();
         updateBoxDraw();
-    }
-
-    private void logInfo(String str){
-        appUI.boxTxtLog.appendText("INFO: " + str + "\n");
-    }
-
-    private void logAPD(String str){
-        appUI.boxTxtLog.appendText("ALGORITHM: " + str + "\n");
     }
 }
