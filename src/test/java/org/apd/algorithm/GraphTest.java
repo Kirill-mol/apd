@@ -73,8 +73,10 @@ public class GraphTest {
     @Test
     public void removeVertex() throws Exception {
         Character start1 = 'a', start2 = 'b', end1 = 'b', end2 = 'c';
-        graph.addEdge(start1,end1,2);
-        graph.addEdge(start2,end2,1);
+        Edge first = new Edge(start1, end1, 2);
+        Edge second = new Edge(start2, end2, 1);
+        graph.addEdge(first);
+        graph.addEdge(second);
         int expectedVertex = graph.getVertexesList().size() - 1;
         int expectedEdges = 0;
         graph.removeVertex(start2);
@@ -87,8 +89,10 @@ public class GraphTest {
     @Test
     public void clearTest(){
         Character start1 = 'a', start2 = 'b', end1 = 'b', end2 = 'c';
-        graph.addEdge(start1,end1,2);
-        graph.addEdge(start2,end2,1);
+        Edge first = new Edge(start1, end1, 2);
+        Edge second = new Edge(start2, end2, 1);
+        graph.addEdge(first);
+        graph.addEdge(second);
         graph.clear();
         int expected = graph.getVertexesList().size();
         Assert.assertEquals(0, expected);
