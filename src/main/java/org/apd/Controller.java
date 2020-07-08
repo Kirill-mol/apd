@@ -118,7 +118,7 @@ public class Controller {
     public void saveResult(File dir){
         try {
             var snapshot = appUI.boxDraw.snapshot(new SnapshotParameters(), null);
-            var file = new File(dir.getPath() + "\\result.png");
+            var file = new File(dir.getPath() + "/result.png");
             ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", file);
         } catch (Exception e){
             appUI.windowError.setHeaderText(e.getMessage());

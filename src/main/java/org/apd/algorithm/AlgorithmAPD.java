@@ -1,17 +1,19 @@
 package org.apd.algorithm;
 
+import javafx.scene.control.TextArea;
+import org.apd.ApplicationHandler;
+
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.List;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AlgorithmAPD {
     private static final Logger LOGGER = Logger.getLogger(AlgorithmAPD.class.getName());
-
-    static {
-        //LOGGER.setLevel(Level.OFF);
-    }
 
     private Graph graph;
 
@@ -23,6 +25,12 @@ public class AlgorithmAPD {
     private boolean isInitializedNotUsedLists = false;
     private boolean isConnectivityChecked = false;
 
+    public AlgorithmAPD(Graph graph, TextArea textArea) {
+        this.graph = graph;
+        LOGGER.setLevel(Level.INFO);
+        Handler handler = new ApplicationHandler(textArea);
+        LOGGER.addHandler(handler);
+    }
     public AlgorithmAPD(Graph graph) {
         this.graph = graph;
     }
@@ -55,14 +63,14 @@ public class AlgorithmAPD {
         while (!stackForDFS.empty()) {
             Character curVertex = stackForDFS.pop();
             checkedVertexesList[vertexesList.indexOf(curVertex)] = true;
-            LOGGER.log(Level.CONFIG, "Check vertex: '{0}' neighbours", curVertex);
+            LOGGER.log(Level.CONFIG, "Check vertex: '{0}' neighbours", curVertex.toString());
             for (Edge edge : edgesList) {
                 if ((edge.getBegin() == curVertex) && (!checkedVertexesList[vertexesList.indexOf(edge.getEnd())])) {
-                    LOGGER.log(Level.CONFIG, "Add vertex: '{0}' to stack", edge.getEnd());
+                    LOGGER.log(Level.CONFIG, "Add vertex: '{0}' to stack", edge.getEnd().toString());
                     stackForDFS.push(edge.getEnd());
                 }
                 if ((edge.getEnd() == curVertex) && (!checkedVertexesList[vertexesList.indexOf(edge.getBegin())])) {
-                    LOGGER.log(Level.CONFIG, "Add vertex: '{0}' to stack", edge.getBegin());
+                    LOGGER.log(Level.CONFIG, "Add vertex: '{0}' to stack", edge.getBegin().toString());
                     stackForDFS.push(edge.getBegin());
                 }
             }

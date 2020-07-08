@@ -61,8 +61,8 @@ public class AppUI {
     public final Alert windowError;
 
     public AppUI(){
-        imgAppIcon = new Image("file:src\\img\\icon-64.png");
-        imgAppCover = new Image("file:src\\img\\cover.png");
+        imgAppIcon = new Image("file:src/img/icon-64.png");
+        imgAppCover = new Image("file:src/img/cover.png");
 
         btnEditGraph = new AppButton("Edit graph", colorOrange);
         btnStepForward = new AppButton("Step forward", colorCyan, true);

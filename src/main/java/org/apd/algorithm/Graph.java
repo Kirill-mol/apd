@@ -1,5 +1,8 @@
 package org.apd.algorithm;
 
+import javafx.scene.control.TextArea;
+import org.apd.ApplicationHandler;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,14 +14,20 @@ public class Graph {
     private List<Edge> edgesList;
     private List<Character> vertexesList;
 
-    static {
-        //LOGGER.setLevel(Level.OFF);
-    }
 
     public Graph() {
         LOGGER.info("Create new graph");
         edgesList = new ArrayList<>();
         vertexesList = new LinkedList<>();
+    }
+
+    public Graph(TextArea textArea){
+        LOGGER.info("Create new graph");
+        edgesList = new ArrayList<>();
+        vertexesList = new LinkedList<>();
+        LOGGER.setLevel(Level.INFO);
+        Handler handler = new ApplicationHandler(textArea);
+        LOGGER.addHandler(handler);
     }
 
 
