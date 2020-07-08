@@ -18,9 +18,9 @@ import static org.junit.Assert.*;
  */
 @RunWith(Parameterized.class)
 public class AlgorithmAPDParametriseTest{
-    static final String badConTestPath = "/home/ilya/Summer_Practise_/JPD_1_iter/src/test/java/org/apd/algorithm/TestResources/AlgorithmAPDTests/BadConnectivity/test";
-    static final String correctConTestPath = "/home/ilya/Summer_Practise_/JPD_1_iter/src/test/java/org/apd/algorithm/TestResources/AlgorithmAPDTests/CorrectConnectivity/test";
-    static final String graphsForApdPath = "/home/ilya/Summer_Practise_/JPD_1_iter/src/test/java/org/apd/algorithm/TestResources/AlgorithmAPDTests/GraphsForApd/test";
+    static final String badConTestPath ="src/test/java/org/apd/algorithm/TestResources/AlgorithmAPDTests/BadConnectivity/test";
+    static final String correctConTestPath = "src/test/java/org/apd/algorithm/TestResources/AlgorithmAPDTests/CorrectConnectivity/test";
+    static final String graphsForApdPath = "src/test/java/org/apd/algorithm/TestResources/AlgorithmAPDTests/GraphsForApd/test";
     static final String testType = ".txt";
     static final int countTest = 10;
 
