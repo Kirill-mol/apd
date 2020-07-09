@@ -21,6 +21,11 @@ public class GraphReader implements Observer {
         LOGGER.addHandler(handler);
     }
 
+    public GraphReader(Graph graph) {
+        this.graph = graph;
+        LOGGER.setLevel(Level.INFO);
+    }
+
     public void addEdge(Edge edge) throws Exception {
         if (!graph.addEdge(edge)) {
             LOGGER.log(Level.WARNING, "Try to add edge: " +  edge.toString());

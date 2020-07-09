@@ -1,0 +1,14 @@
+z n 15
+z m 3
+z l 10
+z e 4
+z h 6
+z g 5
+f g 8
+f h 8
+f e 11
+f l 9
+f w 3
+d c 6
+w b 2
+w a 6
