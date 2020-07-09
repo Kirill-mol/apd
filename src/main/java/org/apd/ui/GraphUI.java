@@ -7,6 +7,8 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import org.apd.algorithm.Edge;
 import org.apd.algorithm.Graph;
+import org.apd.algorithm.Vertex;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -14,9 +16,9 @@ public class GraphUI {
     private class GraphV extends Circle{
         private final Text name;
 
-        GraphV(double centerX, double centerY, Character name){
+        GraphV(double centerX, double centerY, Vertex name){
             super(centerX, centerY,6.0);
-            this.name = new Text("" + name);
+            this.name = new Text("" + name.toString());
             this.name.yProperty().set(centerY - 10.0);
             this.name.xProperty().set(centerX);
             this.name.setStyle("-fx-font-weight: bold; -fx-text-fill: #fff");
@@ -76,7 +78,7 @@ public class GraphUI {
 
     public void addToSpanning(Edge e){
         for (var edge: graphEdges){
-            if (e.getBegin() == edge.v1.name.getText().charAt(0) && e.getEnd() == edge.v2.name.getText().charAt(0)){
+            if (e.getBegin().equals(new Vertex(Character.toString(edge.v1.name.getText().charAt(0)))) && e.getEnd().equals(new Vertex(Character.toString(edge.v2.name.getText().charAt(0))))){
                 edge.setStroke(Color.web(AppUI.colorGreen));
                 edge.v1.setFill(Color.web(AppUI.colorGreen));
                 edge.v2.setFill(Color.web(AppUI.colorGreen));

@@ -25,7 +25,7 @@ public class App extends Application {
         var appUI = new AppUI();
         var graphUI = new GraphUI(appUI.boxDraw);
         var graph = new Graph(appUI.boxTxtLog);
-        var apd = new AlgorithmAPD(graph);
+        var apd = new AlgorithmAPD(graph, appUI.boxTxtLog);
         var controller = new Controller(appUI, graphUI, graph, apd);
 
         appUI.btnStart.setOnAction(actionEvent -> {

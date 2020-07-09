@@ -5,6 +5,7 @@ import javafx.scene.SnapshotParameters;
 import org.apd.algorithm.AlgorithmAPD;
 import org.apd.algorithm.Edge;
 import org.apd.algorithm.Graph;
+import org.apd.algorithm.Vertex;
 import org.apd.ui.AppUI;
 import org.apd.ui.GraphUI;
 
@@ -43,7 +44,7 @@ public class Controller {
         try {
             var scanner = new Scanner(appUI.boxTxtAddE.getText()).useDelimiter(System.getProperty("line.separator"));
             String[] curLine = scanner.nextLine().split(" ");
-            Edge edge = new Edge(curLine[0].charAt(0), curLine[1].charAt(0), Integer.parseInt(curLine[2]));
+            Edge edge =  new Edge(new Vertex(curLine[0]), new Vertex(curLine[1]), Integer.parseInt(curLine[2]));
             apd.addEdge(edge);
             update();
             enableBtn();
@@ -70,7 +71,7 @@ public class Controller {
             var scanner = new Scanner(appUI.boxTxtAddE.getText()).useDelimiter(System.getProperty("line.separator"));
             String[] curLine = scanner.nextLine().split(" ");
             for (var str: curLine){
-                apd.removeVertex(str.charAt(0));
+                apd.removeVertex(new Vertex(Character.toString(str.charAt(0))));
             }
             update();
             disableBtn();

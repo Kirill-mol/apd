@@ -12,14 +12,14 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class AlgorithmAPD {
+public class AlgorithmAPD implements Observer{
     private static final Logger LOGGER = Logger.getLogger(AlgorithmAPD.class.getName());
 
     private Graph graph;
 
     private List<Edge> notUsedEdges = new ArrayList<>();
-    private List<Character> usedVertexes = new ArrayList<>();
-    private List<Character> notUsedVertexes = new ArrayList<>();
+    private List<Vertex> usedVertexes = new ArrayList<>();
+    private List<Vertex> notUsedVertexes = new ArrayList<>();
     private List<Edge> minimumSpanningTree = new ArrayList<>();
 
     private boolean isInitializedNotUsedLists = false;
@@ -35,15 +35,11 @@ public class AlgorithmAPD {
         this.graph = graph;
     }
 
-    public AlgorithmAPD() {
-        this.graph = new Graph();
-    }
-
     private void initialize() {
         if (!isInitializedNotUsedLists) {
             LOGGER.log(Level.INFO, "Initialize arrays before algorithm");
             notUsedEdges = new ArrayList<>(graph.getEdgesList());
-            notUsedEdges.removeIf(edge -> edge.getBegin() == edge.getEnd());
+            notUsedEdges.removeIf(edge -> edge.getBegin().equals(edge.getEnd()));
             notUsedVertexes = new ArrayList<>(graph.getVertexesList());
             usedVertexes.add(notUsedVertexes.remove(0));
             isInitializedNotUsedLists = true;
@@ -56,21 +52,21 @@ public class AlgorithmAPD {
         LOGGER.log(Level.INFO, "Check graph connectivity");
         var checkedVertexesList = new boolean[graph.getVertexesList().size()];
         List<Edge> edgesList = graph.getEdgesList();
-        List<Character> vertexesList = graph.getVertexesList();
-        Stack<Character> stackForDFS = new Stack<>();
+        List<Vertex> vertexesList = graph.getVertexesList();
+        Stack<Vertex> stackForDFS = new Stack<>();
         stackForDFS.push(vertexesList.get(0));
         LOGGER.log(Level.CONFIG, "Start DFS, checking graph connectivity.");
         while (!stackForDFS.empty()) {
-            Character curVertex = stackForDFS.pop();
+            Vertex curVertex = stackForDFS.pop();
             checkedVertexesList[vertexesList.indexOf(curVertex)] = true;
-            LOGGER.log(Level.CONFIG, "Check vertex: '{0}' neighbours", curVertex.toString());
+            LOGGER.log(Level.CONFIG, "Check vertex: " + curVertex.toString() + " neighbours");
             for (Edge edge : edgesList) {
-                if ((edge.getBegin() == curVertex) && (!checkedVertexesList[vertexesList.indexOf(edge.getEnd())])) {
-                    LOGGER.log(Level.CONFIG, "Add vertex: '{0}' to stack", edge.getEnd().toString());
+                if ((edge.getBegin().equals(curVertex)) && (!checkedVertexesList[vertexesList.indexOf(edge.getEnd())])) {
+                    LOGGER.log(Level.CONFIG, "Add vertex: " + edge.getEnd().toString() + " to stack");
                     stackForDFS.push(edge.getEnd());
                 }
-                if ((edge.getEnd() == curVertex) && (!checkedVertexesList[vertexesList.indexOf(edge.getBegin())])) {
-                    LOGGER.log(Level.CONFIG, "Add vertex: '{0}' to stack", edge.getBegin().toString());
+                if ((edge.getEnd().equals(curVertex)) && (!checkedVertexesList[vertexesList.indexOf(edge.getBegin())])) {
+                    LOGGER.log(Level.CONFIG, "Add vertex: " + edge.getBegin().toString() + " to stack");
                     stackForDFS.push(edge.getBegin());
                 }
             }
@@ -94,39 +90,39 @@ public class AlgorithmAPD {
         minimumSpanningTree.clear();
         isConnectivityChecked = false;
         isInitializedNotUsedLists = false;
-        graph = new Graph();
+        graph.clear();
     }
 
     public void removeEdge(Edge edge) {
         graph.removeEdge(edge);
     }
 
-    public void removeVertex(Character vertex) {
+    public void removeVertex(Vertex vertex) {
         graph.removeVertex(vertex);
     }
 
     public void addEdge(Edge edge) throws Exception {
         if (!graph.addEdge(edge)) {
-            LOGGER.log(Level.WARNING, "Try to add edge: '{0}'", edge.toString());
+            LOGGER.log(Level.WARNING, "Try to add edge: " +  edge.toString());
             throw new Exception("edge already exist");
         }
     }
 
     public void readGraphFromFile(File file) throws Exception {
-        LOGGER.log(Level.INFO, "Read graph from file: {0}", file.getName());
+        LOGGER.log(Level.INFO, "Read graph from file: " + file.getName());
         var scanner = new Scanner(file).useDelimiter(System.getProperty("line.separator"));
         while (scanner.hasNext()) {
             String[] curLine = scanner.nextLine().split(" ");
-            Edge edge = new Edge(curLine[0].charAt(0), curLine[1].charAt(0), Integer.parseInt(curLine[2]));
+            Edge edge = new Edge(new Vertex(curLine[0]), new Vertex(curLine[1]), Integer.parseInt(curLine[2]));
             addEdge(edge);
         }
     }
 
     public List<Edge> result() throws Exception {
         initialize();
-        /*if (!graphConnectivityCheck()) {
+        if (!graphConnectivityCheck()) {
             throw new Exception("graph isn't connected");
-        }*/
+        }
         LOGGER.log(Level.SEVERE, "Called function result, to find mst");
         while (notUsedVertexes.size() > 0) {
             nextEdgeAtMst();
@@ -141,7 +137,7 @@ public class AlgorithmAPD {
             LOGGER.log(Level.WARNING, "Graph isn't connected");
             throw new Exception("graph isn't connected");
         }
-        var result = new Edge('a', 'a', -1);
+        var result = new Edge(new Vertex("a"), new Vertex("a"), -1);
         if (notUsedVertexes.size() > 0) {
             int minE = -1;
             for (int i = 0; i < notUsedEdges.size(); i++) {
@@ -166,7 +162,7 @@ public class AlgorithmAPD {
             }
             minimumSpanningTree.add(notUsedEdges.get(minE));
             result = notUsedEdges.get(minE);
-            LOGGER.log(Level.INFO, "Add edge: {0} to MST", result.toString());
+            LOGGER.log(Level.INFO, "Add edge: " + result.toString() + " to MST");
             notUsedEdges.remove(minE);
         } else {
             throw new Exception("all vertexes added");
@@ -174,11 +170,16 @@ public class AlgorithmAPD {
         return result;
     }
 
-    public List<Character> getUsedVertexes(){
+    public List<Vertex> getUsedVertexes(){
         return usedVertexes;
     }
 
     public List<Edge> getMinimumSpanningTree(){
         return minimumSpanningTree;
+    }
+
+    @Override
+    public void updateNotify(boolean isOn) {
+        LOGGER.setLevel(Level.OFF);
     }
 }

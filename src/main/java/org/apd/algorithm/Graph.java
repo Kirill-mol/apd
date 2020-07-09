@@ -8,17 +8,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.*;
 
-public class Graph {
+public class Graph implements Observer {
     private static final Logger LOGGER = Logger.getLogger(Graph.class.getName());
 
     private List<Edge> edgesList;
-    private List<Character> vertexesList;
-
+    private List<Vertex> vertexesList;
 
     public Graph() {
         LOGGER.info("Create new graph");
         edgesList = new ArrayList<>();
         vertexesList = new LinkedList<>();
+        LOGGER.removeHandler(new ConsoleHandler());
     }
 
     public Graph(TextArea textArea){
@@ -32,16 +32,16 @@ public class Graph {
 
 
     public boolean addEdge(Edge edge) {
-        LOGGER.log(Level.INFO,"Try to add new edge: {0}", edge);
+        LOGGER.log(Level.INFO,"Try to add new edge: " + edge.toString());
         if(!checkEdge(edge)) return false;
-        LOGGER.log(Level.INFO,"Edge: {0} doesn't exist in the graph", edge);
+        LOGGER.log(Level.INFO,"Edge: " + edge.toString() + " doesn't exist in the graph");
         edgesList.add(edge);
         if (!vertexesList.contains(edge.getBegin())) {
-            LOGGER.log(Level.INFO, "Vertex: '{0}' is new in graph, add it to vertexes list", edge.getBegin().toString());
+            LOGGER.log(Level.INFO, "Vertex: " + edge.getBegin().toString() + " is new in graph, add it to vertexes list");
             vertexesList.add(edge.getBegin());
         }
         if (!vertexesList.contains(edge.getEnd())){
-            LOGGER.log(Level.INFO, "Vertex: '{0}' is new in graph, add it to vertexes list", edge.getEnd().toString());
+            LOGGER.log(Level.INFO, "Vertex: " + edge.getEnd().toString() + " is new in graph, add it to vertexes list");
             vertexesList.add(edge.getEnd());
         }
         return true;
@@ -63,36 +63,37 @@ public class Graph {
     }
 
     public void removeEdge(Edge edge) {
-        LOGGER.log(Level.INFO, "Remove edge: {0}, from graph", edge);
+        LOGGER.log(Level.INFO, "Remove edge: " + edge.toString() + ", from graph");
         edgesList.remove(edge);
         boolean isContainFirstVertex = false;
         boolean isContainSecondVertex = false;
         for (Edge curEdge : edgesList) {
-            if (curEdge.getBegin() == edge.getBegin() || curEdge.getEnd() == edge.getBegin())
+            if (curEdge.getBegin().equals(edge.getBegin()) || curEdge.getEnd().equals(edge.getBegin()))
                 isContainFirstVertex = true;
-            if (curEdge.getBegin() == edge.getEnd() || curEdge.getEnd() == edge.getEnd()) isContainSecondVertex = true;
+            if (curEdge.getBegin().equals(edge.getEnd()) || curEdge.getEnd().equals(edge.getEnd()))
+                isContainSecondVertex = true;
         }
         if (!isContainFirstVertex) {
             vertexesList.remove(edge.getBegin());
-            LOGGER.log(Level.CONFIG, "No edges, connected to vertex: '{0}'", edge.getBegin());
+            LOGGER.log(Level.CONFIG, "No edges, connected to vertex: " + edge.getBegin());
         }
         if (!isContainSecondVertex) {
-            LOGGER.log(Level.CONFIG, "No edges, connected to vertex: '{0}'", edge.getEnd());
+            LOGGER.log(Level.CONFIG, "No edges, connected to vertex: " + edge.getEnd());
             vertexesList.remove(edge.getEnd());
         }
     }
 
-    public void removeVertex(Character vertex) {
-        LOGGER.log(Level.CONFIG, "Remove vertex: '{0}' from graph", vertex);
+    public void removeVertex(Vertex vertex) {
+        LOGGER.log(Level.CONFIG, "Remove vertex: " + vertex + " from graph");
         vertexesList.remove(vertex);
-        edgesList.removeIf(edge -> edge.getBegin() == vertex || edge.getEnd() == vertex);
+        edgesList.removeIf(edge -> edge.getBegin().equals(vertex) || edge.getEnd().equals(vertex));
     }
 
     public List<Edge> getEdgesList() {
         return edgesList;
     }
 
-    public List<Character> getVertexesList() {
+    public List<Vertex> getVertexesList() {
         return vertexesList;
     }
 
@@ -103,5 +104,10 @@ public class Graph {
             sb.append(edge.toString()).append("\n");
         }
         return sb.toString();
+    }
+
+    @Override
+    public void updateNotify(boolean isOn) {
+        LOGGER.setLevel(Level.OFF);
     }
 }

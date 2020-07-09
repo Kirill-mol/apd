@@ -4,20 +4,20 @@ import java.util.Objects;
 
 public class Edge {
 
-    private Character begin, end;
+    private Vertex begin, end;
     private int weight;
 
-    public Edge(Character start, Character stop, int weight) {
+    public Edge(Vertex start, Vertex stop, int weight) {
         this.begin = start;
         this.end = stop;
         this.weight = weight;
     }
 
-    public Character getBegin() {
+    public Vertex getBegin() {
         return begin;
     }
 
-    public Character getEnd() {
+    public Vertex getEnd() {
         return end;
     }
 
@@ -35,8 +35,8 @@ public class Edge {
         if (this == o) return true;
         if (!(o instanceof Edge)) return false;
         Edge edge = (Edge) o;
-        return ((this.getBegin() == edge.getBegin()) && (this.getEnd() == edge.getEnd())) ||
-                ((this.getEnd() == edge.getBegin()) && (this.getBegin() == edge.getEnd()));
+        return ((this.getBegin().equals(edge.getBegin())) && (this.getEnd().equals(edge.getEnd()))) ||
+                ((this.getEnd().equals(edge.getBegin())) && (this.getBegin().equals(edge.getEnd())));
     }
 
     @Override
