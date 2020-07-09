@@ -93,28 +93,10 @@ public class AlgorithmAPD implements Observer{
         graph.clear();
     }
 
-    public void removeEdge(Edge edge) {
-        graph.removeEdge(edge);
-    }
-
-    public void removeVertex(Vertex vertex) {
-        graph.removeVertex(vertex);
-    }
-
     public void addEdge(Edge edge) throws Exception {
         if (!graph.addEdge(edge)) {
             LOGGER.log(Level.WARNING, "Try to add edge: " +  edge.toString());
             throw new Exception("edge already exist");
-        }
-    }
-
-    public void readGraphFromFile(File file) throws Exception {
-        LOGGER.log(Level.INFO, "Read graph from file: " + file.getName());
-        var scanner = new Scanner(file).useDelimiter(System.getProperty("line.separator"));
-        while (scanner.hasNext()) {
-            String[] curLine = scanner.nextLine().split(" ");
-            Edge edge = new Edge(new Vertex(curLine[0]), new Vertex(curLine[1]), Integer.parseInt(curLine[2]));
-            addEdge(edge);
         }
     }
 
@@ -168,14 +150,6 @@ public class AlgorithmAPD implements Observer{
             throw new Exception("all vertexes added");
         }
         return result;
-    }
-
-    public List<Vertex> getUsedVertexes(){
-        return usedVertexes;
-    }
-
-    public List<Edge> getMinimumSpanningTree(){
-        return minimumSpanningTree;
     }
 
     @Override

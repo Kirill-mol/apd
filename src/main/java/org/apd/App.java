@@ -6,6 +6,8 @@ import javafx.beans.value.ObservableValue;
 import javafx.stage.Stage;
 import org.apd.algorithm.AlgorithmAPD;
 import org.apd.algorithm.Graph;
+import org.apd.algorithm.GraphReader;
+import org.apd.algorithm.ObserverManager;
 import org.apd.ui.AppUI;
 import org.apd.ui.GraphUI;
 
@@ -25,57 +27,48 @@ public class App extends Application {
         var appUI = new AppUI();
         var graphUI = new GraphUI(appUI.boxDraw);
         var graph = new Graph(appUI.boxTxtLog);
+        var graphReader = new GraphReader(graph, appUI.boxTxtLog);
         var apd = new AlgorithmAPD(graph, appUI.boxTxtLog);
-        var controller = new Controller(appUI, graphUI, graph, apd);
+        var controller = new Controller(appUI, graphUI, graphReader, graph, apd);
+        var obsManager = new ObserverManager();
+        obsManager.addObserver(graph);
+        obsManager.addObserver(apd);
+        obsManager.addObserver(graphReader);
 
         appUI.btnStart.setOnAction(actionEvent -> {
             stage.setScene(appUI.sceneMain);
             stage.setResizable(true);
         });
 
-        appUI.btnEditGraph.setOnAction(actionEvent -> {
-            appUI.windowEdit.show();
-        });
+        appUI.btnEditGraph.setOnAction(actionEvent -> appUI.windowEdit.show());
 
         Logger.getLogger("log");
 
-        appUI.btnOK.setOnAction(actionEvent -> {
-            appUI.windowEdit.close();
-        });
+        appUI.btnOK.setOnAction(actionEvent -> appUI.windowEdit.close());
 
         appUI.btnAddFromFile.setOnAction(actionEvent -> {
             var file = appUI.windowAddFromFile.showOpenDialog(appUI.windowEdit);
             controller.openFile(file);
         });
 
-        appUI.btnAddE.setOnAction(actionEvent -> {
-            controller.addEdge();
-        });
+        appUI.btnAddE.setOnAction(actionEvent -> controller.addEdge());
 
-        appUI.btnDeleteE.setOnAction(actionEvent -> {
-            controller.deleteEdge();
-        });
+        appUI.btnDeleteE.setOnAction(actionEvent -> controller.deleteEdge());
 
-        appUI.btnDeleteV.setOnAction(actionEvent -> {
-            controller.deleteVertex();
-        });
+        appUI.btnDeleteV.setOnAction(actionEvent -> controller.deleteVertex());
 
-        appUI.btnDeleteGraph.setOnAction(actionEvent -> {
-            controller.deleteGraph();
-        });
+        appUI.btnClear.setOnAction(actionEvent -> controller.clear());
 
-        appUI.btnStepForward.setOnAction(actionEvent -> {
-            controller.nextStep();
-        });
+        appUI.btnStepForward.setOnAction(actionEvent -> controller.nextStep());
 
-        appUI.btnResult.setOnAction(actionEvent -> {
-            controller.result();
-        });
+        appUI.btnResult.setOnAction(actionEvent -> controller.result());
 
         appUI.btnSaveResult.setOnAction(actionEvent -> {
            var dir = appUI.windowSaveResult.showDialog(stage);
            controller.saveResult(dir);
         });
+
+        appUI.checkLog.setOnAction(actionEvent -> obsManager.notify(appUI.checkLog.isSelected()));
 
         appUI.boxDraw.widthProperty().addListener(new ChangeListener<Number>() {
             @Override

@@ -2,10 +2,7 @@ package org.apd;
 
 import javafx.collections.FXCollections;
 import javafx.scene.SnapshotParameters;
-import org.apd.algorithm.AlgorithmAPD;
-import org.apd.algorithm.Edge;
-import org.apd.algorithm.Graph;
-import org.apd.algorithm.Vertex;
+import org.apd.algorithm.*;
 import org.apd.ui.AppUI;
 import org.apd.ui.GraphUI;
 
@@ -17,21 +14,23 @@ import javax.imageio.ImageIO;
 import javafx.embed.swing.SwingFXUtils;
 
 public class Controller {
-    private AppUI appUI;
-    private GraphUI graphUI;
-    private Graph graph;
-    private AlgorithmAPD apd;
+    private final AppUI appUI;
+    private final GraphUI graphUI;
+    private final Graph graph;
+    private final GraphReader graphReader;
+    private final AlgorithmAPD apd;
 
-    Controller(AppUI aUI, GraphUI gUI, Graph g, AlgorithmAPD a){
+    Controller(AppUI aUI, GraphUI gUI, GraphReader gr, Graph g, AlgorithmAPD a){
         appUI = aUI;
         graphUI = gUI;
+        graphReader = gr;
         graph = g;
         apd = a;
     }
 
     public void openFile(File file){
         try {
-            apd.readGraphFromFile(file);
+            graphReader.readGraphFromFile(file);
             update();
             enableBtn();
         } catch (Exception e) {
@@ -45,7 +44,7 @@ public class Controller {
             var scanner = new Scanner(appUI.boxTxtAddE.getText()).useDelimiter(System.getProperty("line.separator"));
             String[] curLine = scanner.nextLine().split(" ");
             Edge edge =  new Edge(new Vertex(curLine[0]), new Vertex(curLine[1]), Integer.parseInt(curLine[2]));
-            apd.addEdge(edge);
+            graphReader.addEdge(edge);
             update();
             enableBtn();
         } catch (Exception e){
@@ -57,9 +56,11 @@ public class Controller {
     public void deleteEdge(){
         try {
             Edge item = (Edge) appUI.boxTableAllGraph.getSelectionModel().getSelectedItem();
-            apd.removeEdge(item);
+            graphReader.removeEdge(item);
             update();
-            disableBtn();
+            if (graph.getVertexesList().size() == 0){
+                clear();
+            }
         } catch (Exception e){
             appUI.windowError.setHeaderText(e.getMessage());
             appUI.windowError.show();
@@ -71,20 +72,23 @@ public class Controller {
             var scanner = new Scanner(appUI.boxTxtAddE.getText()).useDelimiter(System.getProperty("line.separator"));
             String[] curLine = scanner.nextLine().split(" ");
             for (var str: curLine){
-                apd.removeVertex(new Vertex(Character.toString(str.charAt(0))));
+                graphReader.removeVertex(new Vertex(Character.toString(str.charAt(0))));
             }
             update();
-            disableBtn();
+            if (graph.getVertexesList().size() == 0){
+                clear();
+            }
         } catch (Exception e){
             appUI.windowError.setHeaderText(e.getMessage());
             appUI.windowError.show();
         }
     }
 
-    public void deleteGraph(){
+    public void clear(){
         apd.clear();
         update();
         disableBtn();
+        appUI.btnEditGraph.setDisable(false);
     }
 
     public void nextStep(){
@@ -130,7 +134,7 @@ public class Controller {
     private void enableBtn(){
         if (graph.getEdgesList().size() != 0){
             appUI.btnDeleteE.setDisable(false);
-            appUI.btnDeleteGraph.setDisable(false);
+            appUI.btnClear.setDisable(false);
             appUI.btnDeleteV.setDisable(false);
             appUI.btnStepForward.setDisable(false);
             appUI.btnResult.setDisable(false);
@@ -140,10 +144,11 @@ public class Controller {
     private void disableBtn(){
         if (graph.getEdgesList().size() == 0){
             appUI.btnDeleteE.setDisable(true);
-            appUI.btnDeleteGraph.setDisable(true);
             appUI.btnDeleteV.setDisable(true);
             appUI.btnStepForward.setDisable(true);
             appUI.btnSaveResult.setDisable(true);
+            appUI.btnResult.setDisable(true);
+            appUI.btnClear.setDisable(true);
         }
     }
 

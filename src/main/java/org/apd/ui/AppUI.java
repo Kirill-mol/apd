@@ -43,8 +43,10 @@ public class AppUI {
     public final Button btnAddFromFile;
     public final Button btnDeleteV;
     public final Button btnDeleteE;
-    public final Button btnDeleteGraph;
+    public final Button btnClear;
     public final Button btnOK;
+
+    public final CheckBox checkLog;
 
     public final Pane boxDraw;
     public final TextArea boxTxtLog;
@@ -73,15 +75,18 @@ public class AppUI {
         btnAddFromFile = new AppButton("Upload data from file", colorCyan);
         btnDeleteE = new AppButton("Delete edge", colorOrange, true);
         btnDeleteV = new AppButton("Delete vertex", colorOrange, true);
-        btnDeleteGraph = new AppButton("Delete graph", colorOrange, true);
+        btnClear = new AppButton("Clear all", colorRed, true);
         btnOK = new AppButton("OK", colorGreen);
 
+        checkLog = new CheckBox("Logging");
+        checkLog.setSelected(true);
+
         boxDraw = new Pane();
-        boxDraw.setStyle("-fx-background-color: #999; -fx-padding: 4px; -fx-max-width: 10000px; -fx-pref-width: 1px; -fx-pref-height: 1px");
+        boxDraw.setStyle("-fx-background-color: #999; -fx-max-width: 10000px; -fx-pref-width: 1px; -fx-pref-height: 1px");
         boxTxtLog = new TextArea();
         boxTxtLog.editableProperty().setValue(false);
         boxTxtLog.setStyle("-fx-background-color: #ddd; -fx-text-fill: #000; -fx-max-width: 400px; -fx-highlight-fill: #ddd");
-        boxTxtAddE = new TextField("<Vertex 1> <Vertex 2> <Weight> or <Vertex 1> <Vertex 2> <...> <Vertex N>");
+        boxTxtAddE = new TextField("Add edge or delete vertexes");
         boxTxtAddE.setMaxWidth(10000.0);
         HBox.setHgrow(boxTxtAddE, Priority.ALWAYS);
         boxTableAllGraph = new TableView<Graph>();
@@ -98,9 +103,12 @@ public class AppUI {
 
         //Components of Main window
         var boxCover = new StackPane(new ImageView(imgAppCover), btnStart);
-        var boxMainCommandsLeft = new HBox(btnStepForward, btnResult);
+        var boxForCheckLog = new BorderPane();
+        boxForCheckLog.setCenter(checkLog);
+        boxForCheckLog.heightProperty().add(btnResult.heightProperty().doubleValue());
+        var boxMainCommandsLeft = new HBox(btnStepForward, btnResult, boxForCheckLog);
         boxMainCommandsLeft.setStyle("-fx-spacing: 5px");
-        var boxMainCommandsRight = new HBox(btnEditGraph, btnSaveResult);
+        var boxMainCommandsRight = new HBox(btnEditGraph, btnClear, btnSaveResult);
         boxMainCommandsRight.setStyle("-fx-spacing: 5px");
         var boxMainCommands = new BorderPane();
         boxMainCommands.setLeft(boxMainCommandsLeft);
@@ -116,7 +124,7 @@ public class AppUI {
         //Components of Edit Graph window
         var boxEditCommandsTop = new HBox(boxTxtAddE, btnAddE, btnAddFromFile);
         boxEditCommandsTop.setStyle("-fx-spacing: 5px; -fx-padding: 5px; -fx-background-color: #fff");
-        var boxEditCommandsBottomLeft = new HBox(btnDeleteV, btnDeleteE, btnDeleteGraph);
+        var boxEditCommandsBottomLeft = new HBox(btnDeleteV, btnDeleteE);
         boxEditCommandsBottomLeft.setStyle("-fx-spacing: 5px");
         var boxEditCommandsBottomRight = new HBox(btnOK);
         boxEditCommandsBottomRight.setStyle("-fx-spacing: 5px");
