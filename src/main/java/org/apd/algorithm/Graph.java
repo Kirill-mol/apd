@@ -108,6 +108,11 @@ public class Graph implements Observer {
 
     @Override
     public void updateNotify(boolean isOn) {
-        LOGGER.setLevel(Level.OFF);
+        if(!isOn) {
+            LOGGER.setLevel(Level.OFF);
+        }
+        else {
+            LOGGER.setLevel(Level.ALL);
+        }
     }
 }

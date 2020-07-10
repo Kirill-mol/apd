@@ -3,7 +3,7 @@ package org.apd.algorithm;
 import java.util.Objects;
 
 public class Vertex {
-    public String name;
+    private String name;
 
     public Vertex(String name) {
         this.name = name;
